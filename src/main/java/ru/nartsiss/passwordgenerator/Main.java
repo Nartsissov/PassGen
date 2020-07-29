@@ -1,13 +1,11 @@
 package ru.nartsiss.passwordgenerator;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -15,7 +13,6 @@ import org.apache.commons.text.RandomStringGenerator;
 
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +37,8 @@ public class Main extends Application {
 
         Image icon = new Image("icon.jpg");
         primaryStage.getIcons().add(icon);
-        primaryStage.setTitle("PassGen by Nartsiss");
         primaryStage.setResizable(false);
+        primaryStage.setTitle("PassGen by Nartsiss");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -63,13 +60,14 @@ public class Main extends Application {
         size.setMinorTickCount(32);
         size.setSnapToTicks(true);
 
-        TextField textField = new TextField("");
-        NumberSpinner numberSpinner = new NumberSpinner();
-        numberSpinner.setMinSize(50, 30);
-        numberSpinner.setLayoutX(upper.getLayoutX() + 100);
-        numberSpinner.setLayoutY(upper.getLayoutY());
+        Label count = new Label("Count:");
+        count.setLayoutX(upper.getLayoutX() + 200);
+        count.setLayoutY(upper.getLayoutY() + 95);
+        Spinner<Integer> spinner = new Spinner<>(1, 100, 1, 1);
+        spinner.setLayoutX(upper.getLayoutX() + 250);
+        spinner.setLayoutY(upper.getLayoutY() + 85);
 
-        Button button = new Button("Generate");
+        Button button = new Button("Generate!");
         Label label = new Label();
         button.setOnAction(event -> {
             parent.getChildren().remove(label);
@@ -85,8 +83,8 @@ public class Main extends Application {
                 parent.getChildren().add(label);
                 return;
             }
-            List<String> passwords = generatePasswords(10, upper.isSelected(), lower.isSelected(), digits.isSelected(), characters.isSelected(), size.valueProperty().intValue());
-            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(String.join("", passwords)), null);
+            List<String> passwords = generatePasswords(spinner.getValue(), upper.isSelected(), lower.isSelected(), digits.isSelected(), characters.isSelected(), size.valueProperty().intValue());
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(String.join("\n", passwords)), null);
             label.setText("Generated passwords are copied to the clipboard.");
             label.setTextFill(Color.GREEN);
             parent.getChildren().add(label);
@@ -111,7 +109,8 @@ public class Main extends Application {
         sliderValue.setLayoutY(button.getLayoutY() + 4);
         label.setLayoutX(5);
         label.setLayoutY(200);
-        parent.getChildren().addAll(upper, lower, digits, characters, size, button, sliderValue, numberSpinner);
+
+        parent.getChildren().addAll(upper, lower, digits, characters, size, button, sliderValue, count, spinner);
     }
 
     private List<String> generatePasswords(int count, boolean isUseUpper, boolean isUseLower, boolean isUseDigits, boolean isUseSymbols, int length) {

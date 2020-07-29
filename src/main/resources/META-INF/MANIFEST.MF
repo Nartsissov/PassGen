@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+JavaFX-Application-Class: ru.nartsiss.passwordgenerator.Main
+Main-Class: ru.nartsiss.passwordgenerator.Main
+
