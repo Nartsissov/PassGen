@@ -48,10 +48,10 @@ public class Main extends Application {
         CheckBox lower = new CheckBox("Use lower-case characters");
         CheckBox digits = new CheckBox("Use digits");
         CheckBox characters = new CheckBox("Use special symbols");
-        upper.fire();
-        lower.fire();
-        digits.fire();
-        characters.fire();
+        upper.setSelected(true);
+        lower.setSelected(true);
+        digits.setSelected(true);
+        characters.setSelected(true);
 
         Slider size = new Slider(0, 128, 16);
         size.setMinSize(400, 10);
